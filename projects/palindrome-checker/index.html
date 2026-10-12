@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Palindrome Checker</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="project">
+      <a class="back" href="../../index.html">← All projects</a>
+      <h1>Palindrome Checker</h1>
+      <form class="fields">
+        <label>Text <input id="text" type="text" value="A man, a plan, a canal: Panama" /></label>
+      </form>
+      <div class="value" id="out" aria-live="polite">—</div>
+    </main>
+    <script type="module">
+      import { isPalindrome } from './logic.js';
+      const input = document.getElementById('text');
+      const out = document.getElementById('out');
+      function render() {
+        if (!input.value.trim()) {
+          out.textContent = '—';
+          return;
+        }
+        out.textContent = isPalindrome(input.value) ? 'Yes ✅' : 'No';
+      }
+      input.addEventListener('input', render);
+      render();
+    </script>
+  </body>
+</html>

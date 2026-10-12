@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Grade Calculator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="project">
+      <a class="back" href="../../index.html">← All projects</a>
+      <h1>Grade Calculator</h1>
+      <form id="form" class="fields">
+        <label>Scores (comma-separated) <input name="scores" placeholder="85,90,78,92" value="85,90,78,92" /></label>
+      </form>
+      <div class="value" id="avg" aria-live="polite">—</div>
+      <p class="hint" id="letter"></p>
+    </main>
+    <script type="module">
+      import { average, letterGrade } from './logic.js';
+      const form = document.getElementById('form');
+      const avg = document.getElementById('avg');
+      const letter = document.getElementById('letter');
+      function render() {
+        const { scores } = Object.fromEntries(new FormData(form));
+        const nums = scores
+          .split(',')
+          .map((x) => Number(x.trim()))
+          .filter((x) => !Number.isNaN(x));
+        if (!nums.length) {
+          avg.textContent = '—';
+          letter.textContent = '';
+          return;
+        }
+        const a = average(nums);
+        avg.textContent = `${a.toFixed(2)}%`;
+        letter.textContent = `Letter: ${letterGrade(a)}`;
+      }
+      form.addEventListener('input', render);
+      render();
+    </script>
+  </body>
+</html>

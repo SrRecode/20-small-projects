@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Digital Clock</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="project">
+      <a class="back" href="../../index.html">← All projects</a>
+      <h1>Digital Clock</h1>
+      <div class="value mono" id="clock" aria-live="off">--:--:--</div>
+      <div class="controls">
+        <button type="button" id="toggle">12-hour</button>
+      </div>
+    </main>
+    <script type="module">
+      import { formatClock } from './logic.js';
+      const clock = document.getElementById('clock');
+      const toggle = document.getElementById('toggle');
+      let hour12 = false;
+      function render() {
+        clock.textContent = formatClock(new Date(), { hour12 });
+      }
+      toggle.addEventListener('click', () => {
+        hour12 = !hour12;
+        toggle.textContent = hour12 ? '24-hour' : '12-hour';
+        render();
+      });
+      render();
+      setInterval(render, 1000);
+    </script>
+  </body>
+</html>

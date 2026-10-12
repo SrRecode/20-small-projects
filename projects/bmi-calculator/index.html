@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BMI Calculator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="project">
+      <a class="back" href="../../index.html">← All projects</a>
+      <h1>BMI Calculator</h1>
+      <form id="form" class="fields">
+        <label>Weight (kg) <input name="kg" type="number" min="0" step="0.1" value="70" /></label>
+        <label>Height (m) <input name="m" type="number" min="0" step="0.01" value="1.75" /></label>
+      </form>
+      <div class="value" id="out" aria-live="polite">—</div>
+      <p class="hint" id="category"></p>
+    </main>
+    <script type="module">
+      import { bmi, bmiCategory } from './logic.js';
+      const form = document.getElementById('form');
+      const out = document.getElementById('out');
+      const category = document.getElementById('category');
+      function render() {
+        const { kg, m } = Object.fromEntries(new FormData(form));
+        const value = bmi(kg, m);
+        out.textContent = value ?? '—';
+        category.textContent = value ? `Category: ${bmiCategory(value)}` : '';
+      }
+      form.addEventListener('input', render);
+      render();
+    </script>
+  </body>
+</html>

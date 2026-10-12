@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dice Roller</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="project">
+      <a class="back" href="../../index.html">← All projects</a>
+      <h1>Dice Roller</h1>
+      <form id="form" class="fields">
+        <label>Dice <input name="count" type="number" min="1" max="10" value="2" /></label>
+        <label>Sides <input name="sides" type="number" min="2" max="100" value="6" /></label>
+      </form>
+      <div class="value mono" id="rolls" aria-live="polite">—</div>
+      <p class="hint" id="total"></p>
+      <div class="controls">
+        <button type="button" id="roll">Roll</button>
+      </div>
+    </main>
+    <script type="module">
+      import { rollDice, sum } from './logic.js';
+      const form = document.getElementById('form');
+      const rolls = document.getElementById('rolls');
+      const total = document.getElementById('total');
+      function roll() {
+        const { count, sides } = Object.fromEntries(new FormData(form));
+        const values = rollDice(count, Number(sides));
+        rolls.textContent = values.join('  ');
+        total.textContent = `Total: ${sum(values)}`;
+      }
+      document.getElementById('roll').addEventListener('click', roll);
+      roll();
+    </script>
+  </body>
+</html>

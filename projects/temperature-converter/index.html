@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Temperature Converter</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="project">
+      <a class="back" href="../../index.html">← All projects</a>
+      <h1>Temperature Converter</h1>
+      <form id="form" class="fields">
+        <label>Value <input name="value" type="number" step="0.01" value="100" /></label>
+        <label>
+          From
+          <select name="from"><option>C</option><option>F</option><option>K</option></select>
+        </label>
+        <label>
+          To
+          <select name="to"><option>F</option><option selected>C</option><option>K</option></select>
+        </label>
+      </form>
+      <div class="value" id="out" aria-live="polite">—</div>
+    </main>
+    <script type="module">
+      import { convertTemperature } from './logic.js';
+      const form = document.getElementById('form');
+      const out = document.getElementById('out');
+      function render() {
+        const { value, from, to } = Object.fromEntries(new FormData(form));
+        try {
+          out.textContent = `${convertTemperature(value, from, to)} °${to}`;
+        } catch (error) {
+          out.textContent = error.message;
+        }
+      }
+      form.addEventListener('input', render);
+      render();
+    </script>
+  </body>
+</html>

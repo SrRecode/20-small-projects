@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Word Counter</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="project">
+      <a class="back" href="../../index.html">← All projects</a>
+      <h1>Word Counter</h1>
+      <form class="fields">
+        <label>Text <textarea id="text" rows="6" placeholder="Paste some text…"></textarea></label>
+      </form>
+      <dl class="result" id="result"></dl>
+    </main>
+    <script type="module">
+      import { analyzeText } from './logic.js';
+      const text = document.getElementById('text');
+      const result = document.getElementById('result');
+      function render() {
+        const stats = analyzeText(text.value);
+        const rows = [
+          ['Words', stats.words],
+          ['Characters', stats.characters],
+          ['Sentences', stats.sentences],
+          ['Reading time', `${stats.readingTimeMinutes} min`],
+        ];
+        result.replaceChildren(
+          ...rows.flatMap(([label, value]) => {
+            const dt = document.createElement('dt');
+            dt.textContent = label;
+            const dd = document.createElement('dd');
+            dd.textContent = value;
+            return [dt, dd];
+          }),
+        );
+      }
+      text.addEventListener('input', render);
+      render();
+    </script>
+  </body>
+</html>

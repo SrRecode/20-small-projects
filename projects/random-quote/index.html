@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Random Quote</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="project">
+      <a class="back" href="../../index.html">← All projects</a>
+      <h1>Random Quote</h1>
+      <blockquote id="quote" aria-live="polite"></blockquote>
+      <div class="controls">
+        <button type="button" id="next">New quote</button>
+      </div>
+    </main>
+    <script type="module">
+      import { pickQuote } from './logic.js';
+      const QUOTES = [
+        { text: 'Simplicity is the soul of efficiency.', author: 'Austin Freeman' },
+        { text: 'Programs must be written for people to read.', author: 'Harold Abelson' },
+        { text: 'The best way to predict the future is to invent it.', author: 'Alan Kay' },
+        { text: 'Make it work, make it right, make it fast.', author: 'Kent Beck' },
+        { text: 'Talk is cheap. Show me the code.', author: 'Linus Torvalds' },
+      ];
+      const quote = document.getElementById('quote');
+      function render() {
+        const item = pickQuote(QUOTES);
+        quote.replaceChildren();
+        const p = document.createElement('p');
+        p.textContent = `“${item.text}”`;
+        const cite = document.createElement('cite');
+        cite.textContent = `— ${item.author}`;
+        quote.append(p, cite);
+      }
+      document.getElementById('next').addEventListener('click', render);
+      render();
+    </script>
+  </body>
+</html>

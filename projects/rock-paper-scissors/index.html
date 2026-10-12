@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="project">
+      <a class="back" href="../../index.html">← All projects</a>
+      <h1>Rock Paper Scissors</h1>
+      <div class="controls" id="choices">
+        <button type="button" data-choice="rock">Rock</button>
+        <button type="button" data-choice="paper">Paper</button>
+        <button type="button" data-choice="scissors">Scissors</button>
+      </div>
+      <div class="value" id="out" aria-live="polite">Pick a move</div>
+      <p class="hint" id="score">You 0 · Computer 0 · Draws 0</p>
+    </main>
+    <script type="module">
+      import { playRound, randomChoice } from './logic.js';
+      const out = document.getElementById('out');
+      const scoreEl = document.getElementById('score');
+      const score = { win: 0, lose: 0, draw: 0 };
+      document.getElementById('choices').addEventListener('click', (event) => {
+        const player = event.target.dataset?.choice;
+        if (!player) return;
+        const computer = randomChoice();
+        const result = playRound(player, computer);
+        score[result] += 1;
+        out.textContent = `${player} vs ${computer} → ${result}`;
+        scoreEl.textContent = `You ${score.win} · Computer ${score.lose} · Draws ${score.draw}`;
+      });
+    </script>
+  </body>
+</html>

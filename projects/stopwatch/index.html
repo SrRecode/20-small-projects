@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stopwatch</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="project">
+      <a class="back" href="../../index.html">← All projects</a>
+      <h1>Stopwatch</h1>
+      <div class="value mono" id="display" aria-live="polite">00:00.00</div>
+      <div class="controls">
+        <button type="button" id="start">Start</button>
+        <button type="button" class="ghost" id="reset">Reset</button>
+      </div>
+    </main>
+    <script type="module">
+      import { formatTime, accumulate } from './logic.js';
+      let elapsed = 0;
+      let last = 0;
+      let running = false;
+      let raf = 0;
+      const display = document.getElementById('display');
+      const startBtn = document.getElementById('start');
+
+      const render = () => { display.textContent = formatTime(elapsed); };
+      const frame = (now) => {
+        elapsed = accumulate(elapsed, now - last);
+        last = now;
+        render();
+        if (running) raf = requestAnimationFrame(frame);
+      };
+      startBtn.addEventListener('click', () => {
+        running = !running;
+        startBtn.textContent = running ? 'Stop' : 'Start';
+        if (running) {
+          last = performance.now();
+          raf = requestAnimationFrame(frame);
+        } else {
+          cancelAnimationFrame(raf);
+        }
+      });
+      document.getElementById('reset').addEventListener('click', () => {
+        running = false;
+        startBtn.textContent = 'Start';
+        cancelAnimationFrame(raf);
+        elapsed = 0;
+        render();
+      });
+      render();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="project">
+      <a class="back" href="../../index.html">← All projects</a>
+      <h1>Shopping Cart</h1>
+      <div id="items" class="list"></div>
+      <dl class="result" id="total"></dl>
+    </main>
+    <script type="module">
+      import { catalog, add, qty, subtotal, total } from './logic.js';
+      let cart = {};
+      const items = document.getElementById('items');
+      const totalEl = document.getElementById('total');
+      function render() {
+        items.replaceChildren(
+          ...catalog.map((product) => {
+            const li = document.createElement('li');
+            const label = document.createElement('div');
+            label.className = 'title';
+            label.textContent = `${product.name} ($${product.price.toFixed(2)})`;
+            const group = document.createElement('div');
+            group.className = 'row';
+            const dec = document.createElement('button');
+            dec.className = 'ghost';
+            dec.textContent = '-';
+            dec.addEventListener('click', () => { cart = qty(cart, product.id, -1); render(); });
+            const count = document.createElement('span');
+            count.textContent = cart[product.id]?.qty ?? 0;
+            const inc = document.createElement('button');
+            inc.className = 'ghost';
+            inc.textContent = '+';
+            inc.addEventListener('click', () => { cart = add(cart, product.id, 1); render(); });
+            const sub = document.createElement('span');
+            sub.textContent = `$${subtotal(cart, product.id).toFixed(2)}`;
+            group.append(dec, count, inc, sub);
+            li.append(label, group);
+            return li;
+          }),
+        );
+        const dd = document.createElement('dd');
+        dd.textContent = `$${total(cart).toFixed(2)}`;
+        totalEl.replaceChildren(document.createElement('dt'), dd);
+      }
+      render();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tip Calculator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="project">
+      <a class="back" href="../../index.html">← All projects</a>
+      <h1>Tip Calculator</h1>
+      <form id="form" class="fields">
+        <label>Bill <input name="bill" type="number" min="0" step="0.01" value="100" /></label>
+        <label>Tip % <input name="tipPercent" type="number" min="0" step="1" value="15" /></label>
+        <label>People <input name="people" type="number" min="1" step="1" value="2" /></label>
+      </form>
+      <dl class="result" id="result"></dl>
+    </main>
+    <script type="module">
+      import { calculateTip } from './logic.js';
+      const form = document.getElementById('form');
+      const result = document.getElementById('result');
+      function render() {
+        const data = Object.fromEntries(new FormData(form));
+        const { tip, total, perPerson } = calculateTip(data);
+        result.replaceChildren(
+          ...[['Tip', tip], ['Total', total], ['Per person', perPerson]].flatMap(([label, value]) => {
+            const dt = document.createElement('dt');
+            dt.textContent = label;
+            const dd = document.createElement('dd');
+            dd.textContent = `$${value.toFixed(2)}`;
+            return [dt, dd];
+          }),
+        );
+      }
+      form.addEventListener('input', render);
+      render();
+    </script>
+  </body>
+</html>

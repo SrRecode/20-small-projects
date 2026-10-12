@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Number Guessing</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="project">
+      <a class="back" href="../../index.html">← All projects</a>
+      <h1>Number Guessing</h1>
+      <p class="hint">I picked a number between 1 and 100.</p>
+      <form id="form" class="fields">
+        <label>Your guess <input name="guess" type="number" min="1" max="100" /></label>
+      </form>
+      <div class="value" id="out" aria-live="polite">—</div>
+      <div class="controls">
+        <button type="button" class="ghost" id="reset">New game</button>
+      </div>
+    </main>
+    <script type="module">
+      import { checkGuess, randomTarget } from './logic.js';
+      const form = document.getElementById('form');
+      const out = document.getElementById('out');
+      let target = randomTarget(100);
+      let tries = 0;
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const guess = Number(new FormData(form).get('guess'));
+        if (!guess) return;
+        tries += 1;
+        const result = checkGuess(guess, target);
+        if (result === 'correct') out.textContent = `Correct in ${tries} tries 🎉`;
+        else out.textContent = result === 'low' ? 'Too low ⬆️' : 'Too high ⬇️';
+      });
+      document.getElementById('reset').addEventListener('click', () => {
+        target = randomTarget(100);
+        tries = 0;
+        form.reset();
+        out.textContent = '—';
+      });
+    </script>
+  </body>
+</html>

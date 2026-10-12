@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FizzBuzz</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="project">
+      <a class="back" href="../../index.html">← All projects</a>
+      <h1>FizzBuzz</h1>
+      <form id="form" class="fields">
+        <label>Up to <input name="count" type="number" min="1" max="200" value="20" /></label>
+      </form>
+      <ul class="list" id="out"></ul>
+    </main>
+    <script type="module">
+      import { fizzbuzz } from './logic.js';
+      const form = document.getElementById('form');
+      const out = document.getElementById('out');
+      function render() {
+        const { count } = Object.fromEntries(new FormData(form));
+        out.replaceChildren(
+          ...fizzbuzz(Number(count)).map((value, i) => {
+            const li = document.createElement('li');
+            li.textContent = `${i + 1}. ${value}`;
+            return li;
+          }),
+        );
+      }
+      form.addEventListener('input', render);
+      render();
+    </script>
+  </body>
+</html>

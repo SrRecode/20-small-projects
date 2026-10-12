@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Color Flipper</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="project">
+      <a class="back" href="../../index.html">← All projects</a>
+      <h1>Color Flipper</h1>
+      <p class="hint">Click to paint the page a random colour. Click the hex to copy it.</p>
+      <div class="value mono" id="hex" aria-live="polite">#000000</div>
+      <div class="controls">
+        <button type="button" id="flip">Flip colour</button>
+      </div>
+    </main>
+    <script type="module">
+      import { randomColor, readableText } from './logic.js';
+      const hex = document.getElementById('hex');
+      function paint() {
+        const color = randomColor();
+        document.body.style.background = color;
+        document.body.style.color = readableText(color);
+        hex.textContent = color;
+      }
+      document.getElementById('flip').addEventListener('click', paint);
+      hex.addEventListener('click', () => navigator.clipboard?.writeText(hex.textContent));
+      paint();
+    </script>
+  </body>
+</html>

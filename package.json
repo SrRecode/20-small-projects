@@ -1,0 +1,14 @@
+{
+  "name": "20-small-projects",
+  "version": "1.0.0",
+  "description": "A gallery of 20 small, self-contained vanilla JavaScript projects, each with pure unit-tested logic",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "start": "node scripts/serve.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

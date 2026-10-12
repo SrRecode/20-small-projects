@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Todo List</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="project">
+      <a class="back" href="../../index.html">← All projects</a>
+      <h1>Todo List</h1>
+      <form id="form" class="fields">
+        <label class="grow">New todo <input name="text" placeholder="Buy milk..." /></label>
+      </form>
+      <div class="row">
+        <button type="button" class="ghost" data-filter="all">All</button>
+        <button type="button" class="ghost" data-filter="active">Active</button>
+        <button type="button" class="ghost" data-filter="completed">Completed</button>
+        <button type="button" class="ghost" data-clear>Clear completed</button>
+      </div>
+      <ul class="list" id="list" aria-live="polite"></ul>
+    </main>
+    <script type="module">
+      import { createTodo, addTodo, toggleTodo, clearCompleted, filterTodos } from './logic.js';
+      let state = [];
+      let filter = 'all';
+      const form = document.getElementById('form');
+      const list = document.getElementById('list');
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const text = new FormData(form).get('text');
+        state = addTodo(state, createTodo(text));
+        form.reset();
+        render();
+      });
+      document.querySelectorAll('[data-filter]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          filter = btn.dataset.filter;
+          render();
+        });
+      });
+      document.querySelector('[data-clear]').addEventListener('click', () => {
+        state = clearCompleted(state);
+        render();
+      });
+      function render() {
+        list.replaceChildren(
+          ...filterTodos(state, filter).map((todo) => {
+            const li = document.createElement('li');
+            if (todo.done) li.classList.add('done');
+            const cb = document.createElement('input');
+            cb.type = 'checkbox';
+            cb.checked = todo.done;
+            cb.addEventListener('change', () => {
+              state = toggleTodo(state, todo.id);
+              render();
+            });
+            const title = document.createElement('span');
+            title.className = 'title';
+            title.textContent = todo.text;
+            li.append(cb, title);
+            return li;
+          }),
+        );
+      }
+      render();
+    </script>
+  </body>
+</html>

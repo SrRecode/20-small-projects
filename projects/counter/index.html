@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Counter</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="project">
+      <a class="back" href="../../index.html">← All projects</a>
+      <h1>Counter</h1>
+      <p class="hint">Clamped between −10 and 10.</p>
+      <div class="value" id="value" aria-live="polite">0</div>
+      <div class="controls">
+        <button type="button" data-delta="-1">−</button>
+        <button type="button" class="ghost" data-reset>Reset</button>
+        <button type="button" data-delta="1">+</button>
+      </div>
+    </main>
+    <script type="module">
+      import { adjust } from './logic.js';
+      const MIN = -10;
+      const MAX = 10;
+      let value = 0;
+      const out = document.getElementById('value');
+      const render = () => { out.textContent = value; };
+      document.querySelectorAll('[data-delta]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          value = adjust(value, Number(btn.dataset.delta), { min: MIN, max: MAX });
+          render();
+        });
+      });
+      document.querySelector('[data-reset]').addEventListener('click', () => {
+        value = 0;
+        render();
+      });
+      render();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Password Strength</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="project">
+      <a class="back" href="../../index.html">← All projects</a>
+      <h1>Password Strength</h1>
+      <form class="fields">
+        <label>Password <input id="pw" type="text" autocomplete="off" placeholder="type a password" /></label>
+      </form>
+      <div class="value" id="label" aria-live="polite">—</div>
+      <div class="controls" id="bar"></div>
+      <ul class="list" id="feedback"></ul>
+    </main>
+    <script type="module">
+      import { scorePassword } from './logic.js';
+      const pw = document.getElementById('pw');
+      const label = document.getElementById('label');
+      const bar = document.getElementById('bar');
+      const feedback = document.getElementById('feedback');
+      function render() {
+        const { score, label: text, feedback: tips } = scorePassword(pw.value);
+        label.textContent = pw.value ? `${text} (${score}/4)` : '—';
+        bar.dataset.score = String(score);
+        feedback.replaceChildren(
+          ...tips.map((tip) => {
+            const li = document.createElement('li');
+            li.textContent = tip;
+            return li;
+          }),
+        );
+      }
+      pw.addEventListener('input', render);
+      render();
+    </script>
+  </body>
+</html>

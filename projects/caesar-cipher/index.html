@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Caesar Cipher</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="project">
+      <a class="back" href="../../index.html">← All projects</a>
+      <h1>Caesar Cipher</h1>
+      <form id="form" class="fields">
+        <label>Text <input name="text" value="Hello, World!" /></label>
+        <label>Shift <input name="shift" type="number" value="3" /></label>
+      </form>
+      <dl class="result" id="result"></dl>
+    </main>
+    <script type="module">
+      import { encrypt, decrypt } from './logic.js';
+      const form = document.getElementById('form');
+      const result = document.getElementById('result');
+      function render() {
+        const { text, shift } = Object.fromEntries(new FormData(form));
+        const enc = encrypt(text, Number(shift));
+        const dec = decrypt(enc, Number(shift));
+        result.replaceChildren(
+          ...[['Encrypted', enc], ['Decrypted back', dec]].flatMap(([label, value]) => {
+            const dt = document.createElement('dt');
+            dt.textContent = label;
+            const dd = document.createElement('dd');
+            dd.textContent = value;
+            return [dt, dd];
+          }),
+        );
+      }
+      form.addEventListener('input', render);
+      render();
+    </script>
+  </body>
+</html>
